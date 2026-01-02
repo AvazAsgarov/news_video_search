@@ -1,0 +1,9 @@
+python-dotenv
+streamlit
+opencv-python
+numpy
+easyocr
+moviepy
+openai
+spacy
+chromadb
