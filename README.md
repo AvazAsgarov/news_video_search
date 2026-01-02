@@ -1,147 +1,264 @@
-Semantic News Video Search 📺🔍
+# 📺 Semantic News Video Search | Multimodal RAG System
 
-A Multimodal RAG (Retrieval-Augmented Generation) system that makes news video archives searchable via natural language. By analyzing Audio, Visuals, and On-Screen Text, users can find precise video segments and receive AI-generated answers to their queries.
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.9+-green.svg)
+![License](https://img.shields.io/badge/license-MIT-orange.svg)
+![AI-Powered](https://img.shields.io/badge/AI--Powered-Multimodal%20RAG-red.svg)
 
-🚀 Features
+An intelligent video retrieval system that transforms news archives into searchable knowledge bases using multimodal AI. Search through hours of video content using natural language and get precise answers with exact timestamps.
 
-Multimodal Analysis: Combines three data streams to understand video content:
+## 🚀 Core Capabilities
 
-Audio: Speech-to-Text transcription (OpenAI Whisper).
+### 🔍 **Intelligent Video Search**
+- **Natural Language Queries**: Ask questions like you would ask a colleague
+- **Multimodal Understanding**: Simultaneously analyzes audio, visuals, and text
+- **Semantic Retrieval**: Finds content by meaning, not just keywords
+- **Exact Timestamping**: Returns precise video segments for playback
 
-Visual: Scene description and context (GPT-4o Vision).
+### 🧠 **Advanced AI Analysis**
+| **Modality** | **Technology** | **What It Captures** |
+|--------------|---------------|----------------------|
+| 🔊 **Audio** | OpenAI Whisper | Transcribed dialogue, speaker identification |
+| 🖼️ **Visual** | GPT-4o Vision | Scene descriptions, activities, objects |
+| 📝 **Text** | EasyOCR | On-screen text, tickers, chyrons, banners |
+| 🏷️ **Metadata** | SpaCy + GPT-4o | Named entities, topics, classifications |
 
-Text (OCR): Extraction of tickers, banners, and chyrons (EasyOCR).
+### ⚡ **Smart Processing**
+- **Sliding Window Segmentation**: 20-second chunks with 50% overlap
+- **Scene Change Detection**: Optimizes API calls using MSE analysis
+- **Parallel Processing**: Efficient handling of multiple modalities
+- **Vector Embeddings**: Semantic storage with ChromaDB
 
-Semantic Search: Uses vector embeddings (ChromaDB) to find videos by meaning, not just keywords.
+## 📁 Project Architecture
 
-Smart Segmentation: Splits videos into 20s sliding windows to preserve context.
-
-Metadata Enrichment:
-
-NER: Identifies People, Organizations, and Locations (Spacy).
-
-Auto-Tagging: Categorizes videos into topics like Politics, Sports, or Economy.
-
-RAG QA: Generates factual, context-aware answers to user questions based on the retrieved video content.
-
-📂 Project Structure
-
+```
 news_video_search/
-├── app/                        # Main backend logic
-│   ├── config.py               # Configuration & Path settings
-│   ├── process_videos.py       # Master ingestion pipeline (Run this first!)
-│   ├── rag_search.py           # RAG generation logic
-│   ├── services/               # External API integrations
-│   │   ├── audio_service.py    # Whisper transcription
-│   │   ├── vision_service.py   # GPT-4o visual analysis
-│   │   └── embedding_service.py# Vector DB interface
-│   └── core/                   # Core processing algorithms
-│       ├── video_processor.py  # Segmentation logic
-│       ├── ner_analyzer.py     # Named Entity Recognition
-│       ├── ocr_processor.py    # Text extraction
-│       └── tag_generator.py    # Automatic topic labeling
-├── data/                       # Data storage (Created automatically)
-│   ├── videos/                 # Put your .mp4 files here
-│   ├── vector_db/              # ChromaDB storage
-│   └── generated_tags.json     # Taxonomy tags
-├── frontend/
-│   └── streamlit_app.py        # Web Interface
-├── requirements.txt            # Python dependencies
-└── .env                        # API Keys (Create this file)
+├── 📂 app/                           # Core backend logic
+│   ├── config.py                     # Environment & configuration
+│   ├── process_videos.py             # ⚡ Master pipeline (run this first)
+│   ├── rag_search.py                 # RAG answer generation
+│   ├── 📂 services/                  # External API integrations
+│   │   ├── audio_service.py          # Whisper transcription
+│   │   ├── vision_service.py         # GPT-4o visual analysis
+│   │   └── embedding_service.py      # Vector embedding generation
+│   └── 📂 core/                      # Processing algorithms
+│       ├── video_processor.py        # Sliding window segmentation
+│       ├── ner_analyzer.py           # Named Entity Recognition
+│       ├── ocr_processor.py          # On-screen text extraction
+│       └── tag_generator.py          # Automatic topic classification
+├── 📂 data/                          # Data storage (auto-created)
+│   ├── videos/                       # 🎬 Place .mp4 files here
+│   ├── vector_db/                    # ChromaDB vector storage
+│   └── generated_tags.json           # Auto-generated taxonomy tags
+├── 📂 frontend/
+│   └── streamlit_app.py              # 🌐 Web interface
+├── requirements.txt                  # Python dependencies
+├── .env.example                      # Environment template
+└── README.md                         # This file
+```
 
+## 🛠️ Quick Start Installation
 
-🛠️ Installation
+### 1. Clone & Setup
 
-1. Clone the Repository
-
-git clone [https://github.com/yourusername/news-video-search.git](https://github.com/yourusername/news-video-search.git)
+```bash
+# Clone repository
+git clone https://github.com/yourusername/news-video-search.git
 cd news_video_search
 
-
-2. Create a Virtual Environment
-
+# Create virtual environment
 python -m venv venv
+
+# Activate environment
 # Windows
 venv\Scripts\activate
 # Mac/Linux
 source venv/bin/activate
 
-
-3. Install Dependencies
-
+# Install dependencies
 pip install -r requirements.txt
+```
 
+### 2. Configure Environment
 
-4. Download Language Models
+```bash
+# Copy environment template
+cp .env.example .env
 
-You need to download the Spacy English model for NER:
+# Edit .env file with your API key
+# Add: OPENAI_API_KEY=sk-proj-your-api-key-here
+```
 
+### 3. Install Language Models
+
+```bash
+# Install SpaCy model for NER
 python -m spacy download en_core_web_sm
+```
 
+## 🏃‍♂️ Usage Guide
 
-5. Configure API Keys
+### **Step 1: Prepare Videos**
+Place your `.mp4` video files in the `data/videos/` directory:
+```bash
+# Create directory if needed
+mkdir -p data/videos
 
-Create a .env file in the root directory and add your OpenAI API Key:
+# Add your news videos here
+# Supported formats: .mp4, .mov, .avi
+```
 
-OPENAI_API_KEY=sk-proj-your-api-key-here
-
-
-🏃 Usage
-
-Step 1: Add Videos
-
-Place your news video files (.mp4 format) into the data/videos/ folder.
-If the folder doesn't exist, the script will create it, or you can create it manually.
-
-Step 2: Process the Videos (Ingestion)
-
-Run the master pipeline. This will transcribe, analyze, and index your videos into the vector database.
-
+### **Step 2: Process Videos**
+Run the ingestion pipeline (this may take time depending on video length):
+```bash
 python -m app.process_videos
+```
+✅ This automatically:
+- Segments videos into 20-second chunks
+- Transcribes audio with Whisper
+- Analyzes visual scenes with GPT-4o Vision
+- Extracts on-screen text with EasyOCR
+- Stores embeddings in ChromaDB
 
-
-Note: This process may take a few minutes depending on the length of your videos.
-
-Step 3: Generate Tags (Optional)
-
-To create category labels (Politics, Sports, etc.) for the UI:
-
+### **Step 3: Generate Tags** (Optional)
+Create topic classifications for better filtering:
+```bash
 python -m app.core.tag_generator
+```
 
-
-Step 4: Launch the Search App
-
-Start the Streamlit frontend:
-
+### **Step 4: Launch Web Interface**
+Start the search application:
+```bash
 streamlit run frontend/streamlit_app.py
+```
+🌐 Open browser at: `http://localhost:8501`
 
+## 🔍 Example Search Queries
 
-Open your browser at http://localhost:8501.
+### 🎯 **Topic-Based Searches**
+```
+"Show me segments about economic policies"
+"Find climate change discussions"
+"Show me sports highlights"
+```
 
-🧪 Example Queries
+### 👥 **People & Events**
+```
+"Find interviews with the President"
+"Show me when the peace treaty was signed"
+"Find speeches by the Prime Minister"
+```
 
-Try asking questions like:
+### 📍 **Location-Specific**
+```
+"Show me footage from Ukraine"
+"Find segments filmed in Washington D.C."
+"Show me events in India"
+```
 
-"What is the update on the peace talks?" (Tests OCR & Audio)
+### 🔎 **Complex Queries**
+```
+"What was discussed about the recent election results?"
+"Show me the debate about healthcare reform"
+"Find moments when the stock market was mentioned"
+```
 
-"Show me the interview with Ronaldo." (Tests Visual Recognition)
+## 🧠 Technical Deep Dive
 
-"How much aid did Zelensky ask for?" (Tests Factual Retrieval)
+### **Video Processing Pipeline**
+```python
+# 1. Segmentation
+Video → 20s chunks (50% overlap)
 
-"Why was the event in India cancelled?" (Tests Complex Reasoning)
+# 2. Multimodal Analysis
+Audio → Whisper → Transcript
+Visual → GPT-4o Vision → Scene description
+Text → EasyOCR → On-screen text extraction
 
-🧠 Technical Details
+# 3. Metadata Enrichment
+NER → People, Organizations, Locations
+Tagging → Topic classification (Politics, Sports, etc.)
 
-Segmentation: Videos are sliced into 20-second chunks with a 10-second overlap. This ensures that sentences or events occurring at the cut point are captured fully in the subsequent chunk.
+# 4. Vector Storage
+Combined text → OpenAI embeddings → ChromaDB
+```
 
-Visual Optimization: To save costs, the system calculates the Mean Squared Error (MSE) between frames. It only sends a frame to GPT-4o if the scene has changed significantly.
+### **RAG Retrieval Flow**
+1. **Query Processing**: User question → vector embedding
+2. **Semantic Search**: Find top 3 relevant video chunks
+3. **Context Assembly**: Combine transcripts, descriptions, OCR
+4. **Answer Generation**: GPT-4o generates response using retrieved context
+5. **Result Delivery**: Answer + exact timestamps + source video
 
-Vector DB: We use ChromaDB with text-embedding-3-small for efficient local vector storage.
+## ⚙️ Configuration Options
 
-⚠️ Requirements
+### **Chunking Parameters**
+Modify in `app/core/video_processor.py`:
+```python
+WINDOW_SIZE = 20      # seconds per chunk
+STEP_SIZE = 10        # seconds of overlap
+MAX_CHUNKS = 100      # limit per video
+```
 
-Python 3.9+
+### **Scene Detection Threshold**
+Adjust in `app/services/vision_service.py`:
+```python
+MSE_THRESHOLD = 1000  # Lower = more sensitive to changes
+```
 
-FFmpeg (Installed via moviepy, but ensure it's available on your system if issues arise)
+### **Database Settings**
+Configure in `app/config.py`:
+```python
+CHROMA_DB_DIR = "data/vector_db"
+EMBEDDING_MODEL = "text-embedding-3-small"
+```
 
-OpenAI API Credit (GPT-4o and Whisper are paid APIs)
+## 📊 Performance Optimization
+
+### **API Cost Management**
+- **Scene Detection**: Only call Vision API when scenes change significantly
+- **Batch Processing**: Process multiple videos sequentially
+- **Local Models**: Option to replace Whisper with local installation
+
+### **Processing Speed**
+- **Parallel Processing**: Audio, visual, and text extraction can be parallelized
+- **Caching**: Results cached to avoid reprocessing
+- **Incremental Updates**: Only process new video segments
+
+## 🤝 Contributing
+
+### **Development Setup**
+```bash
+# Install development dependencies
+pip install -r requirements-dev.txt
+
+# Run tests
+pytest tests/
+
+# Code formatting
+black app/ frontend/ tests/
+```
+
+### **Adding New Features**
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 🙏 Acknowledgements
+
+- **OpenAI** for Whisper and GPT-4o APIs
+- **ChromaDB** for vector storage solutions
+- **Streamlit** for the web framework
+- **EasyOCR** for text extraction capabilities
+
+---
+
+<div align="center">
+Made with ❤️ for journalists, researchers, and media professionals
+</div>
